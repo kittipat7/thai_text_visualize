@@ -6,7 +6,7 @@
 #### 1. scrape_and_prepare 
 จะทำการดึงข้อมูลการแสดงความคิดเห็น จาก https://th.tripadvisor.com/ มาสร้างเป็น dataframe แล้วทำการ preprocess_text (Normalize, Word Tokenize, Remove stopwords,  Remove any non-Thai characters) ให้พร้อมสำหรับการนำไปทำ wordcloud และการ กรองแชท
 
-## ทำการ web scraping
+#### ทำการ web scraping
 ```python
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -49,13 +49,13 @@ for i in range(0,80,10):
         reviews.append(review.text)
 ```
 
-## สร้าง datframe
+#### สร้าง datframe
 ```python
 import pandas as pd
 df = pd.DataFrame(reviews, columns=["review"])
 ```
 
-## preprocess_text (Normalize, Word Tokenize, Remove stopwords,  Remove any non-Thai characters)
+#### preprocess_text (Normalize, Word Tokenize, Remove stopwords,  Remove any non-Thai characters)
 ```python
 from pythainlp import corpus
 from pythainlp.util import normalize
@@ -76,7 +76,7 @@ def preprocess_text(text):
     df['processed_text'] = df['review'].apply(preprocess_text)
 ```
 
-## export to csv
+#### export to csv
 ```python
 df.to_csv("Jomtien_Beach_Night_Market_Processed.csv")
 ```
