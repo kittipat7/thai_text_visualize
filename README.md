@@ -81,7 +81,8 @@ def preprocess_text(text):
 df.to_csv("Jomtien_Beach_Night_Market_Processed.csv")
 ```
 ### 2. wordcloud
-โดย wordcloud จะทำการอ่านไฟล์ Jomtien_Beach_Night_Market_Processed.csv แล้วมาสร้าง wordcloud แสดงความถี่ของคำที่ยังไม่ผ่านการกรองใดๆ
+#### wordcloud แสดงคำที่เกิดขึ้นทั้งหมด
+โดย จะทำการอ่านไฟล์ Jomtien_Beach_Night_Market_Processed.csv แล้วมาสร้าง wordcloud แสดงความถี่ของคำที่ยังไม่ผ่านการกรองใดๆ
 ```python
 from wordcloud import WordCloud
 from collections import Counter
@@ -105,3 +106,46 @@ wordcloud.generate_from_frequencies({word: word_freq[word] for word in top_N_wor
 wordcloud.to_image()
 ```
 ![image](https://user-images.githubusercontent.com/97491541/235827404-9949ffab-45b6-4fa6-8542-2133d892d75b.png)
+#### wordcloud แสดงคำที่กรองคำที่ไม่สนใจออก
+โดยจะทำการกรองคำที่ไม่สนใจ หรือคำที่ไม่มีความหมายจาก wordcloud แรกออกในตัวอย่างนี้กรองคำว่า คน, ค่า ออกไป
+```python
+from pythainlp import corpus
+from pythainlp.util import normalize
+from collections import Counter
+import deepcut
+
+def preprocess_text(text):
+    # Normalize the text
+    normalized_text = normalize(text)
+    # Tokenize the normalized text into words using deepcut
+    words = deepcut.tokenize(normalized_text)
+    # Remove any stopwords
+    words = [word for word in words if word not in corpus.thai_stopwords()]
+    # Remove any non-Thai characters
+    thai_words = [word for word in words if all(c >= 'ก' and c <= '๛' for c in word)]
+    return thai_words
+    
+    df['processed_text'] = df['review'].apply(preprocess_text)
+```
+
+#### export to csv Jomtien_Beach_Night_Market_Processed.csv
+```python
+df.to_csv("Jomtien_Beach_Night_Market_Processed.csv")
+```
+### 2. wordcloud
+#### wordcloud แสดงคำที่เกิดขึ้นทั้งหมด
+โดย จะทำการอ่านไฟล์ Jomtien_Beach_Night_Market_Processed.csv แล้วมาสร้าง wordcloud แสดงความถี่ของคำที่ยังไม่ผ่านการกรองใดๆ
+```python
+#คน,ค่า
+keys_to_remove =  input("ใส่คำที่ต้องการกรองออกคั่นด้วย , หรือ space bar: ").replace(',', ' ').split()
+words= [item for item in words if item not in keys_to_remove]
+word_freq = Counter(words)
+# Select the top 100 most frequent words
+top_N_words_filter = [word for word, _ in word_freq.most_common(100)]
+
+wordcloud2 = WordCloud(font_path='D:\oho\THSarabunNew.ttf',background_color="white",prefer_horizontal=True, max_words=100, contour_width=3, contour_color='steelblue', width=2400, height=1000)
+wordcloud2.generate_from_frequencies({word: word_freq[word] for word in top_N_words_filter})
+wordcloud2.to_image()
+```
+![image](https://user-images.githubusercontent.com/97491541/235827924-224470e3-289d-41e7-9131-1ae28ed30612.png)
+
