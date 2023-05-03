@@ -109,33 +109,6 @@ wordcloud.to_image()
 #### wordcloud แสดงคำที่กรองคำที่ไม่สนใจออก
 โดยจะทำการกรองคำที่ไม่สนใจ หรือคำที่ไม่มีความหมายจาก wordcloud แรกออกในตัวอย่างนี้กรองคำว่า คน, ค่า ออกไป
 ```python
-from pythainlp import corpus
-from pythainlp.util import normalize
-from collections import Counter
-import deepcut
-
-def preprocess_text(text):
-    # Normalize the text
-    normalized_text = normalize(text)
-    # Tokenize the normalized text into words using deepcut
-    words = deepcut.tokenize(normalized_text)
-    # Remove any stopwords
-    words = [word for word in words if word not in corpus.thai_stopwords()]
-    # Remove any non-Thai characters
-    thai_words = [word for word in words if all(c >= 'ก' and c <= '๛' for c in word)]
-    return thai_words
-    
-    df['processed_text'] = df['review'].apply(preprocess_text)
-```
-
-#### export to csv Jomtien_Beach_Night_Market_Processed.csv
-```python
-df.to_csv("Jomtien_Beach_Night_Market_Processed.csv")
-```
-### 2. wordcloud
-#### wordcloud แสดงคำที่เกิดขึ้นทั้งหมด
-โดย จะทำการอ่านไฟล์ Jomtien_Beach_Night_Market_Processed.csv แล้วมาสร้าง wordcloud แสดงความถี่ของคำที่ยังไม่ผ่านการกรองใดๆ
-```python
 #คน,ค่า
 keys_to_remove =  input("ใส่คำที่ต้องการกรองออกคั่นด้วย , หรือ space bar: ").replace(',', ' ').split()
 words= [item for item in words if item not in keys_to_remove]
