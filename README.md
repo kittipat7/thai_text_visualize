@@ -81,3 +81,27 @@ def preprocess_text(text):
 df.to_csv("Jomtien_Beach_Night_Market_Processed.csv")
 ```
 ### 2. wordcloud
+โดย wordcloud จะทำการอ่านไฟล์ Jomtien_Beach_Night_Market_Processed.csv แล้วมาสร้าง wordcloud แสดงความถี่ของคำที่ยังไม่ผ่านการกรองใดๆ
+```python
+from wordcloud import WordCloud
+from collections import Counter
+import pandas as pd
+
+df=pd.read_csv("Jomtien_Beach_Night_Market_Processed.csv")
+df['processed_text'] = df['processed_text'].map(lambda x: list(eval(x)))
+df=df.drop(['Unnamed: 0'],axis=1)
+    
+
+# Flatten the list of words into a single list
+words = [word for sublist in df['processed_text'] for word in sublist]
+
+# Count the frequency of each word in the list of words
+word_freq = Counter(words)
+# Select the top 100 most frequent words
+top_N_words = [word for word, _ in word_freq.most_common(100)]
+
+wordcloud = WordCloud(font_path='D:\oho\THSarabunNew.ttf',background_color="white",prefer_horizontal=True, max_words=100, contour_width=3, contour_color='steelblue', width=2400, height=1000)
+wordcloud.generate_from_frequencies({word: word_freq[word] for word in top_N_words})
+wordcloud.to_image()
+```
+![image](https://user-images.githubusercontent.com/97491541/235827404-9949ffab-45b6-4fa6-8542-2133d892d75b.png)
