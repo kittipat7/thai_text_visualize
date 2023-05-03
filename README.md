@@ -122,3 +122,23 @@ wordcloud2.to_image()
 ```
 ![image](https://user-images.githubusercontent.com/97491541/235827924-224470e3-289d-41e7-9131-1ae28ed30612.png)
 
+#### wordcloud แสดงความถี่ของคำที่สนใจ
+โดยจะให้ user เลือกคำที่สนใจใน wordcloud ก่อนหน้ามาโดย wordcloud นี้จะแสดงความถี่ของคำที่สนใจ ในตัวอย่างนี้เลือก ดื่ม,เต้นรำ,เที่ยว
+```python
+
+#ดื่ม,เต้นรำ,เที่ยว
+keywords =  input("ใส่คำที่สนใจออกคั่นด้วย , หรือ space bar: ").replace(',', ' ').split()
+df_paid_interest = df[df['review'].apply(lambda x: any(keyword in x for keyword in keywords))]
+#df_paid.head()
+# Remove any stopwords and non-Thai characters from the list of words and select only the words that are in the list of keywords
+words_interest = [word for sublist in df['processed_text'] for word in sublist]
+words_interest = [word for word in words if word in keywords]
+
+# Count the frequency of each word in the list of words
+word_freq_interest = Counter(words_interest)
+
+wordcloud3 = WordCloud(font_path='D:\oho\THSarabunNew.ttf',background_color="white",prefer_horizontal=True, max_words=100, contour_width=3, contour_color='steelblue', width=2400, height=1000)
+wordcloud3.generate_from_frequencies({word: word_freq[word] for word in word_freq_interest})
+wordcloud3.to_image()
+```
+![image](https://user-images.githubusercontent.com/97491541/235828311-eb8d849f-9d4d-4168-a4a9-39aadb926da4.png)
