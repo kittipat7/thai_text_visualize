@@ -177,3 +177,11 @@ selected_rows.to_excel(file_name)
 #### ตัวอย่างผลลัพธ์
 ![image](https://user-images.githubusercontent.com/97491541/235829579-2411fe02-ac37-4989-8784-76ca8ab3ee67.png)
 
+## Reference
+https://th.tripadvisor.com/ 
+
+https://github.com/rkcosmos/deepcut
+
+https://pypi.org/project/selenium/
+
+
